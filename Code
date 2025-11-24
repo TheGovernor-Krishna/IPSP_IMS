@@ -1,0 +1,123 @@
+inventory=[]
+class II:
+    def __init__(self, Productid, Nav, quantity, price):
+        self.Productid = Productid
+        self.Nav = Nav
+        self.quantity = quantity
+        self.price = price
+
+    def __repr__(self):
+        return f"II(ID:{self.Productid},Name:{self.Nav},Qty:{self.quantity},Price:${self.price:.2f})"
+
+def add_item(Productid, Nav, quantity, price):
+    for item in inventory:
+        if item.Productid == Productid:
+            print(f"Error: Item with ID {Productid} already exists.")
+            return
+    new_item = II(Productid, Nav, quantity, price)
+    inventory.append(new_item)
+    print(f"Item '{Nav}' (ID: {Productid}) added successfully.")
+
+def update_item(Productid, new_quantity):
+    for item in inventory:
+        if item.Productid == Productid:
+            item.quantity = new_quantity
+            print(f"Item '{item.Nav}' (ID: {Productid}) quantity updated to {new_quantity}.")
+            return
+    print(f"Error: Item with ID {Productid} not found.")
+
+def view_inventory():
+    if not inventory:
+        print("Mal Sampla Ahe")
+    else:
+        print("Available Inventory:")
+        for item in inventory:
+            print(item)
+
+def search_item(ques, searchby='Nav'):
+    founditems = []
+    for item in inventory:
+        if searchby == 'Nav':
+            if ques.lower() in item.Nav.lower():
+                founditems.append(item)
+        elif searchby == 'id':
+            if str(ques) == str(item.Productid):
+                founditems.append(item)
+        else:
+            print("Error: Invalid 'searchby' parameter. Use 'Nav' or 'id'.")
+            return
+    if not founditems:
+        print(f"No items found for '{ques}' by {searchby}.")
+    else:
+        print(f"Found Items (by {searchby} for '{ques}'):")
+        for item in founditems:
+            print(item)
+def delete_item(Productid):
+    for i, item in enumerate(inventory):
+        if item.Productid == Productid:
+            removed_item = inventory.pop(i)
+            print(f"Item '{removed_item.Nav}' (ID: {Productid}) removed successfully.")
+            return
+    print(f"Error: Item with ID {Productid} not found.")
+
+def delete_inventory():
+    password = "Tejas_You_Can_Do_It"
+    entered_password = input("Enter the Password: ")
+    if entered_password == password:
+        inventory.clear()
+        print("Inventory Cleared")
+    else:
+        print("Invalid Password")
+        print("Dont Give Up")
+print("\n---------Welcome to the Inventory Management System---------")
+print("Available functions: ")
+print("add_item")
+print("update_item")
+print("view_inventory")
+print("search_item")
+print("delete_item")
+print("delete_inventory")
+print("End_Session")
+while True:
+    user_input = input("\nChoose the Function: ").strip()
+
+    if user_input == "add_item":
+        try:
+            product_id = input("Enter Product ID: ")
+            name = input("Enter Name: ")
+            quantity = int(input("Enter Quantity: "))
+            price = float(input("Enter Price: "))
+            add_item(product_id, name, quantity, price)
+            print("---------Item added successfully---------")
+        except ValueError:
+            print("Invalid input for quantity or price. Please enter numbers.")
+    elif user_input == "update_item":
+        try:
+            product_id = input("Enter Product ID to update: ")
+            new_quantity = int(input("Enter new quantity: "))
+            update_item(product_id, new_quantity)
+            print("---------Item updated successfully---------")
+        except ValueError:
+            print("Invalid input for new quantity. Please enter a number.")
+    elif user_input == "view_inventory":
+        view_inventory()
+        print("---------Looked at Inventory successfully---------")
+    elif user_input == "search_item":
+        query = input("Enter search query: ")
+        search_by_option = input("Search by (Nav): ")
+        if search_by_option.upper() == 'id':
+            search_item(query, searchby='id')
+        else:
+            search_item(query)
+        print("---------Searched for Item successfully---------")
+    elif user_input == "delete_item":
+          product_id = input("Enter Product ID to delete: ")
+          delete_item(product_id)
+          print("---------Item deleted successfully---------")
+    elif user_input == "delete_inventory":
+        delete_inventory()
+    elif user_input == "End_Session":
+        print("---------Ending Session---------")
+        break
+    else:
+        print("---------Invalid input, Please try again---------")
